@@ -1,0 +1,166 @@
+.liked {
+  position           : absolute;
+  left               : 0;
+  top                : 0;
+  border-radius      : 40px;
+  bottom             : 0;
+  background         : #F08D8D;
+  right              : 0;
+  background-repeat  : no-repeat;
+  background-position: center;
+  opacity            : 0;
+  background-size    : 100px;
+  animation-duration : 2s;
+  animation-name     : liked;
+}
+
+.added {
+  position           : absolute;
+  left               : 0;
+  top                : 0;
+  border-radius      : 40px;
+  bottom             : 0;
+  background         : rgb(131, 78%, 74);
+  right              : 0;
+  background-repeat  : no-repeat;
+  background-position: center;
+  opacity            : 0;
+  background-size    : 100px;
+  animation-name     : slidein;
+  animation-duration : 2s;
+}
+
+
+
+.card {
+  background   : #FFFFFF;
+  border       : 1px solid #F8F8F8;
+  border-radius: 40px;
+  width        : 210px;
+  position     : relative;
+  padding      : 20px 29px 34px;
+  transition   : all 0.3s;
+  margin       : 0 auto;
+  height       : 265px;
+
+  &::before {
+    content: '';
+    opacity: 0;
+  }
+
+
+
+  &:hover {
+    transform : translateY(-10px);
+    box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.05);
+  }
+
+
+}
+
+.img {
+  display: block;
+  width  : 133px;
+  height : 112px;
+  margin : 0 auto;
+}
+
+.title {
+  font-weight  : 400;
+  font-size    : 14px;
+  line-height  : 17px;
+  margin-bottom: 14px;
+}
+
+.description {
+  font-weight   : 500;
+  font-size     : 11px;
+  line-height   : 13px;
+  text-transform: uppercase;
+  color         : #BDBDBD;
+  margin-bottom : 2px;
+}
+
+.price {
+  font-weight: 700;
+  font-size  : 14px;
+  line-height: 17px;
+  color      : #000000;
+  display    : block;
+
+}
+
+.button {
+  position       : absolute;
+  width          : 32px;
+  height         : 32px;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  border         : 1px solid #F2F2F2;
+  border-radius  : 8px;
+}
+
+.like {
+  position  : absolute;
+  left      : 30px;
+  top       : 30px;
+  background: #FEF0F0;
+
+}
+
+.add {
+  right     : 30px;
+  bottom    : 34px;
+  background: #FFFFFF;
+}
+
+.block {
+
+  &::before {
+    content: '';
+    opacity: 0;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    opacity: 0;
+    z-index: 0;
+  }
+
+  50% {
+    z-index: 2;
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    z-index: 0;
+
+  }
+}
+
+@keyframes liked {
+  0% {
+    opacity: 0;
+    z-index: 0;
+  }
+
+  50% {
+    z-index: 2;
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    z-index: 0;
+
+  }
+}
+
+@media (max-width : 630px) {
+  .card {
+    width: 90%;
+  }
+}

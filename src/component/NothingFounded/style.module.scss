@@ -1,0 +1,71 @@
+.notFoundBox {
+  min-height: 60vh;
+  position  : relative;
+}
+
+.notFound {
+
+  position  : absolute;
+  left      : 50%;
+  top       : 50%;
+  transform : translate(-50%, -50%);
+  text-align: center;
+}
+
+.img {
+  text-align   : center;
+  margin-bottom: 24px;
+
+  img {
+    width : 70px;
+    margin: 0 auto;
+    height: 70px;
+  }
+}
+
+.title {
+  font-family  : 'Inter';
+  font-weight  : 600;
+  font-size    : 24px;
+  line-height  : 29px;
+  text-align   : center;
+  margin-bottom: 11px;
+}
+
+.description {
+  font-family  : 'Inter';
+  font-weight  : 400;
+  font-size    : 16px;
+  line-height  : 19px;
+  color        : #000000;
+  opacity      : 0.4;
+  margin-bottom: 70px;
+  max-width    : 290px;
+}
+
+.button {
+  font-family  : 'Inter';
+  font-weight  : 600;
+  font-size    : 16px;
+  line-height  : 19px;
+  text-align   : center;
+  color        : #FFFFFF;
+  border       : none;
+  background   : #9DD458;
+  border-radius: 18px;
+  padding      : 17px 45px 17px 60px;
+  position     : relative;
+
+  img {
+    position : absolute;
+    left     : 30px;
+    top      : 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width : 630px) {
+  .notFound {
+    width: 90%;
+  }
+}

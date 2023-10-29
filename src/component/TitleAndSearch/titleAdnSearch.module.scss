@@ -1,0 +1,68 @@
+.backButton {
+  width          : 35px;
+  height         : 35px;
+  background     : #FFFFFF;
+  border         : 1px solid #F2F2F2;
+  border-radius  : 8px;
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  transform      : rotate(90deg);
+  margin-right   : 20px;
+}
+
+.title {
+  display    : flex;
+  align-items: center;
+  font-size  : 32px;
+  line-height: 39px;
+  margin     : 30px 0;
+}
+
+.top {
+  display        : flex;
+  justify-content: space-between;
+  align-items    : center;
+}
+
+.topInput {
+  width        : 250px;
+  height       : 45px;
+  border       : 1px solid #F3F3F3;
+  border-radius: 10px;
+  padding      : 13px 20px 15px;
+  font-weight  : 500;
+
+  &:focus {
+    border: 1px solid #F3F3F3;
+
+  }
+
+  &::placeholder {
+    font-size  : 14px;
+    line-height: 17px;
+    color      : #C4C4C4;
+
+  }
+}
+
+@media (max-width : 630px) {
+
+  .backButton {
+    margin-right: 10px;
+  }
+
+  .title {
+    font-size  : 23px;
+    line-height: 21px;
+  }
+
+  .content__top-right {
+    width: 52%;
+  }
+
+  .topInput {
+    width: 100%;
+  }
+
+}

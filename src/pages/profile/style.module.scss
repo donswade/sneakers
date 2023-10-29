@@ -1,0 +1,123 @@
+.order {
+  background   : #FFFFFF;
+  border       : 1px solid #F3F3F3;
+  border-radius: 40px;
+  min-width    : 100%;
+  margin-bottom: 30px;
+}
+
+.top {
+  display        : flex;
+  justify-content: space-between;
+  padding        : 25px 50px;
+  align-items    : center;
+  position       : relative;
+
+  &__leftTitle {
+    font-weight: 500;
+    font-size  : 18px;
+    line-height: 22px;
+  }
+
+  &__leftDescription {
+    font-size  : 10px;
+    line-height: 12px;
+    margin-top : 3px;
+  }
+
+  &__leftSpan {
+    font-weight   : 500;
+    font-size     : 8px;
+    line-height   : 7px;
+    text-transform: uppercase;
+    color         : #9DD458;
+
+  }
+
+  &__left {}
+
+  &__button {
+    width          : 35px;
+    height         : 35px;
+    background     : #FFFFFF;
+    border         : 1px solid #F2F2F2;
+    border-radius  : 8px;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    position       : absolute;
+    top            : 50%;
+    left           : 50%;
+    transform      : translate(-50%, -50%);
+
+
+  }
+
+  &__buttonOpen {
+    img {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__buttonClose {
+    img {
+      transform: rotate(0deg);
+    }
+  }
+
+  &__leftDescription {}
+
+  &__rightDescription {
+    font-weight   : 500;
+    font-size     : 8px;
+    line-height   : 10px;
+    text-transform: uppercase;
+    color         : #BDBDBD;
+  }
+
+  &__rightPrice {
+    font-weight: 700;
+    font-size  : 16px;
+    line-height: 17px;
+    color      : #000000;
+    margin     : 2px 0;
+
+  }
+}
+
+.bottom {
+  padding : 30px 0;
+  position: relative;
+
+
+  &::before {
+    content         : "";
+    position        : absolute;
+    left            : 0;
+    right           : 0;
+    height          : 0.6px;
+    background-color: #eaeaea;
+  }
+}
+
+.main {
+  position  : relative;
+  min-height: 60vh;
+}
+
+@media (max-width: 630px) {
+  .top {
+    padding: 20px;
+  }
+
+  .top__leftTitle {
+    font-size  : 16px;
+    line-height: 18px;
+  }
+
+  .top__rightPrice {
+    font-size  : 14px;
+    line-height: 17px;
+  }
+
+}
