@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, json } from 'react-router-dom';
 import './App.scss';
 
 import Card from './component/Card';
@@ -12,7 +12,9 @@ import Header from './component/Header';
 
 
 
+
 function App() {
+
   const [items, setItems] = useState([]);
   const [addedCarts, setAddedCarts] = useState([]);
   const [likedCarts, setLikedCarts] = useState([]);
@@ -34,7 +36,6 @@ function App() {
           .then((res) => {
             setAddedCarts(res.data)
             return res.data
-
           })
           .then(res => {
             const newItemss = JSON.parse(JSON.stringify(cards));
@@ -55,47 +56,74 @@ function App() {
     setDrawerOpen(!isDrawerOpen)
     isDrawerOpen ? document.body.style.overflow = "auto" : document.body.style.overflow = "hidden ";
   }
-  const onClick = (nameButton, card) => {
-    const newCard = JSON.parse(JSON.stringify(card));
-    const newItems = JSON.parse(JSON.stringify(items));
-    const newAddedCarts = JSON.parse(JSON.stringify(addedCarts));
-    const indexOfCard = newItems.findIndex(cart => cart.id === newCard.id);
 
-    if (nameButton === "like") {
-      newCard.isLike = !newCard.isLike;
-      newItems[indexOfCard] = newCard;
+  const onClickAdd = async (nameButton, card) => {
+    const copyCard = JSON.parse(JSON.stringify(card))
+    const copyItems = JSON.parse(JSON.stringify(items));
+    const copyAddedItems = JSON.parse(JSON.stringify(addedCarts));
+    const copyLikeItems = JSON.parse(JSON.stringify(likedCarts));
+    const indexOfCardInItems = copyItems.findIndex(card => Number(card.id) === Number(copyCard.id))
+    const indexofCardinAdded = copyAddedItems.findIndex(card => Number(card.id) === Number(copyCard.id))
+    const indexofCardinLike = copyLikeItems.findIndex(card => Number(card.id) === Number(copyCard.id))
 
-      setItems(newItems);
-
-    } else if (nameButton === "add") {
-
-      newCard.isAdded = !newCard.isAdded;
-
-      if (newCard.isAdded) {
-        console.log(newCard)
-        newAddedCarts.push(newCard);
-        newAddedCarts[newAddedCarts.length - 1].element = newAddedCarts.length
-        newItems[indexOfCard] = newCard;
-        setItems(newItems);
-        setAddedCarts(newAddedCarts)
-        axios.post('https://630a790132499100328636f0.mockapi.io/addedCards', newCard)
-        console.log(addedCarts)
-
+    if (nameButton === "add") {
+      console.log(nameButton)
+      if (!copyCard.isAdded) {
+        try {
+          copyCard.isAdded = !copyCard.isAdded;
+          const newAddedCarts = [...copyAddedItems, copyCard];
+          copyItems[indexOfCardInItems] = copyCard
+          setItems(copyItems)
+          setAddedCarts(newAddedCarts);
+          const { data } = await axios.post('https://630a790132499100328636f0.mockapi.io/addedCards', copyCard);
+          copyCard.element = data.element
+        }
+        catch {
+          console.log("щось пішло не так")
+          console.error(Error)
+        }
       } else {
-        const index = newItems[indexOfCard].element
-        console.log(newAddedCarts)
-        axios.delete(`https://630a790132499100328636f0.mockapi.io/addedCards/${index}`)
-
-        const indexOfDeletedCard = newAddedCarts.findIndex(cart => cart.name === newCard.name);
-        newItems[indexOfCard] = newCard;
-        newAddedCarts.splice(indexOfDeletedCard, 1);
-
-        setItems(newItems);
-        setAddedCarts(newAddedCarts)
+        try {
+          copyCard.isAdded = !copyCard.isAdded;
+          copyItems[indexOfCardInItems] = copyCard;
+          const newAddedCarts = copyAddedItems.filter(element => element.id != copyCard.id);
+          setAddedCarts(newAddedCarts);
+          setItems(copyItems)
+          console.log(copyAddedItems[indexofCardinAdded].element)
+          await axios.delete(`https://630a790132499100328636f0.mockapi.io/addedCards/${copyAddedItems[indexofCardinAdded].element}`)
+          console.log(copyItems)
+        } catch {
+          console.log("щось пішло не так")
+          console.error(Error)
+        }
       }
     }
-    const newLikedCarts = newItems.filter(element => element.isLike);
-    setLikedCarts(newLikedCarts)
+    else {
+      if (!copyCard.isLike) {
+        try {
+          copyCard.isLike = !copyCard.isLike;
+          const newLikeCarts = [...copyLikeItems, copyCard];
+          copyItems[indexOfCardInItems] = copyCard
+          setItems(copyItems)
+          setLikedCarts(newLikeCarts);
+        }
+        catch {
+          console.log("щось пішло не так")
+          console.error(Error)
+        }
+      } else {
+        try {
+          copyCard.isLike = !copyCard.isLike;
+          copyItems[indexOfCardInItems] = copyCard;
+          const newLikeCarts = copyLikeItems.filter(element => element.id != copyCard.id);
+          setLikedCarts(newLikeCarts);
+          setItems(copyItems)
+        } catch {
+          console.log("щось пішло не так")
+          console.error(Error)
+        }
+      }
+    }
   }
 
   const removeAdded = () => {
@@ -113,7 +141,12 @@ function App() {
 
   const renderCards = (cards) => {
     return cards.map((card, index) => {
-      return <Card obj={card} key={index} index={index} onClick={(nameButton, card) => onClick(nameButton, card)} />
+      return <Card
+        obj={card}
+        key={index}
+        index={index}
+        onClick={(nameButton, card) => onClickAdd(nameButton, card)} />
+
     });
   }
 
@@ -124,7 +157,7 @@ function App() {
   }
 
 
-  //   [
+  // [
   //   {
   //     "id": 1,
   //     "img": "img/sneakers/1.jpg",
@@ -209,27 +242,73 @@ function App() {
 
   return (
     <div className='app' style={isDrawerOpen ? { overflow: "hidden" } : { overflow: "auto" }}>
-      <Drawer setBoughtCards={setBoughtCards} removeAdded={removeAdded} setAddedCarts={setAddedCarts} isDrawerOpen={isDrawerOpen} priceAddedCards={priceAddedCards} changeDrawerStatus={changeDrawerStatus} addedCarts={addedCarts} removeCart={(nameButton, card) => onClick(nameButton, card)} />
+      <Drawer
+        onClickAdd={(nameButton, card) => onClickAdd(nameButton, card)}
+        setBoughtCards={setBoughtCards}
+        removeAdded={removeAdded}
+        setAddedCarts={setAddedCarts}
+        isDrawerOpen={isDrawerOpen}
+        priceAddedCards={priceAddedCards}
+        changeDrawerStatus={changeDrawerStatus}
+        addedCarts={addedCarts}
+        removeCart={(nameButton, card) => onClickAdd(nameButton, card)}
+      />
       <div className='wrapper'>
-        <Header setInput={setInput} priceAddedCards={priceAddedCards} changeDrawerStatus={changeDrawerStatus} />
+        <Header
+          setInput={setInput}
+          priceAddedCards={priceAddedCards}
+          changeDrawerStatus={changeDrawerStatus}
+        />
         <div className='content'>
           <Routes>
-            <Route path="/test-react-snikers" element={
-              <Main setAddedCarts={setAddedCarts} isLoading={isLoading} items={items} isDrawerOpen={isDrawerOpen} priceAddedCards={priceAddedCards} changeDrawerStatus={changeDrawerStatus} addedCarts={addedCarts} input={input} showCartSearched={showCartSearched} searchedCards={searchedCards} renderCards={(items) => renderCards(items)} onClick={(nameButton, card) => onClick(nameButton, card)} />
+            <Route path="/sneakers" element={
+              <Main
+                setAddedCarts={setAddedCarts}
+                isLoading={isLoading}
+                items={items}
+                isDrawerOpen={isDrawerOpen}
+                priceAddedCards={priceAddedCards}
+                changeDrawerStatus={changeDrawerStatus}
+                addedCarts={addedCarts}
+                input={input}
+                showCartSearched={showCartSearched}
+                searchedCards={searchedCards}
+                renderCards={(items) => renderCards(items)}
+                onClick={(nameButton, card) => onClickAdd(nameButton, card)}
+              />
             }>
             </Route>
-            <Route path="/test-react-snikers/liked" element={
-              <LikedPage items={likedCarts} input={input} showCartSearched={showCartSearched} searchedCards={searchedCards} renderCards={(addedCarts) => renderCards(addedCarts)} />
-            }></Route>
-            <Route path="/test-react-snikers/profile" element={
-              <ProfilePage setBoughtCards={setBoughtCards} items={boughtCards} isDrawerOpen={isDrawerOpen} priceAddedCards={priceAddedCards} changeDrawerStatus={changeDrawerStatus} addedCarts={addedCarts} input={input} showCartSearched={showCartSearched} searchedCards={searchedCards} renderCards={(addedCarts) => renderCards(addedCarts)} onClick={(nameButton, card) => onClick(nameButton, card)} />
+            <Route
+              path="/liked"
+              element={
+                <LikedPage
+                  items={likedCarts}
+                  input={input}
+                  showCartSearched={showCartSearched}
+                  searchedCards={searchedCards}
+                  renderCards={(addedCarts) => renderCards(addedCarts)}
+                />
+              }></Route>
+            <Route path="/profile" element={
+              <ProfilePage
+                setBoughtCards={setBoughtCards}
+                items={boughtCards}
+                isDrawerOpen={isDrawerOpen}
+                priceAddedCards={priceAddedCards}
+                changeDrawerStatus={changeDrawerStatus}
+                addedCarts={addedCarts}
+                input={input} s
+                howCartSearched={showCartSearched}
+                searchedCards={searchedCards}
+                renderCards={(addedCarts) => renderCards(addedCarts)}
+                onClick={(nameButton, card) => onClickAdd(nameButton, card)}
+              />
             }></Route>
           </Routes >
         </div>
       </div>
     </div>
   );
-
 }
 
 export default App;

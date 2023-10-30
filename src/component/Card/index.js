@@ -7,17 +7,10 @@ import likee from "./likeCard.svg"
 import checkMark from './checkMark.svg'
 
 const Card = ({ obj, index, onClick }) => {
-  let [location, setLocation] = React.useState('');
   let [likedClass, setLikedClass] = React.useState('');
   let [addedClass, setAddedClass] = React.useState('');
 
-  //Отримання данних на якій ми сторінці
-  const pathname = useLocation().pathname
 
-  //першим ділом міняємо стейт щоб зразу нормально показувались картинки 
-  useEffect(() => {
-    setLocation(pathname)
-  })
 
   //функція при натиску на кнопку лайк в якій міняємо данні в стейті, обєкті і класи для правильного відображення на екрані
   const like = () => {
@@ -36,7 +29,7 @@ const Card = ({ obj, index, onClick }) => {
       <div className={style.card} >
         <div className={likedClass} style={{ "backgroundImage": `url(${likee})` }}></div>
         <div className={addedClass} style={{ "backgroundImage": `url(${checkMark})` }}></div>
-        <img className={style.img} src={location === "/test-react-snikers" ? `/test-react-snikers/${obj.img}` : obj.img} alt="image sneaker" />
+        <img className={style.img} src={"sneakers/" + obj.img} alt="image sneaker" />
         <h2 className={style.title}>{obj.name}</h2>
         <p className={style.description}>Цена: <span className={style.price}>{obj.price} руб.</span></p>
 

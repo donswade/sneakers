@@ -10,7 +10,16 @@ import drawerBox from "./drawerBox.svg"
 import completed from "./image 8.svg"
 
 
-const Drawer = ({ setBoughtCards, removeAdded, setAddedCarts, isDrawerOpen, changeDrawerStatus, addedCarts, removeCart, priceAddedCards = 0 }) => {
+const Drawer = (
+  { onClickAdd,
+    setBoughtCards,
+    removeAdded,
+    setAddedCarts,
+    isDrawerOpen,
+    changeDrawerStatus,
+    addedCarts,
+    priceAddedCards = 0 }
+) => {
   // форма
   const {
     register,
@@ -21,17 +30,11 @@ const Drawer = ({ setBoughtCards, removeAdded, setAddedCarts, isDrawerOpen, chan
     mode: "onBlur"
   })
 
-  let [location, setLocation] = React.useState('');
   const [opened, setOpen] = React.useState(false);
   const [isShowComplete, setShowComplete] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false)
   const [isConection, setConection] = React.useState(false)
 
-  const pathname = useLocation().pathname
-
-  useEffect(() => {
-    setLocation(pathname)
-  })
   //сховати модалку
   const closeModal = (e) => e.target.className === `${style.drawer} ${style.modalWindowActive}` ? setOpen(false) : null
   //ховає статус 'замовлено'
@@ -48,10 +51,11 @@ const Drawer = ({ setBoughtCards, removeAdded, setAddedCarts, isDrawerOpen, chan
   //submit форми, відправка данних на сервер
   const showData = async (data) => {
     setLoading(true)
-    //видалення добавленних карточок
+    //видалення добавленних карточок після submit
     try {
-      await addedCarts.forEach(element => {
-        axios.delete(`https://630a790132499100328636f0.mockapi.io/addedCards/${element.element}`)
+      await addedCarts.forEach(card => {
+        console.log(card)
+        axios.delete(`https://630a790132499100328636f0.mockapi.io/addedCards/${card.element}`)
           .then((data) => {
             setLoading(false)
             setConection(true)
@@ -87,12 +91,12 @@ const Drawer = ({ setBoughtCards, removeAdded, setAddedCarts, isDrawerOpen, chan
   const Carts = addedCarts.map((cart, index) => {
     return (
       <div className={style.card} key={index} >
-        <img className={style.cardImg} src={location === "/test-react-snikers" ? `/test-react-snikers/${cart.img}` : cart.img} alt="image sneaker" />
+        <img className={style.cardImg} src={"sneakers/" + cart.img} alt="image sneaker" />
         <div className={style.cardText}>
           <h2 className={style.cardTitle}>{cart.name}</h2>
           <p className={style.cardDescription}><span className={style.cardPrice}>{cart.price} руб.</span></p>
         </div>
-        <div className={style.cardButton} onClick={() => removeCart("add", cart)}>
+        <div className={style.cardButton} onClick={() => onClickAdd("add", cart)}>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10.6653 5.13122H7.20214V1.66821C7.20214 0.332846 5.13114 0.332846 5.13114 1.66821V5.13122H1.668C0.332935 5.13122 0.332935 7.20215 1.668 7.20215H5.13114V10.6652C5.13114 12.0005 7.20214 12.0005 7.20214 10.6652V7.20215H10.6653C12.0005 7.20215 12.0005 5.13122 10.6653 5.13122Z" fill="#D3D3D3" />
           </svg>
