@@ -1,5 +1,4 @@
-import React, { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import React from "react"
 //файли, компоненти
 import style from "./card.module.scss"
 //фотки
@@ -29,7 +28,7 @@ const Card = ({ obj, index, onClick }) => {
       <div className={style.card} >
         <div className={likedClass} style={{ "backgroundImage": `url(${likee})` }}></div>
         <div className={addedClass} style={{ "backgroundImage": `url(${checkMark})` }}></div>
-        <img className={style.img} src={"sneakers/" + obj.img} alt="image sneaker" />
+        <img className={style.img} src={obj.img} alt="sneaker" />
         <h2 className={style.title}>{obj.name}</h2>
         <p className={style.description}>Цена: <span className={style.price}>{obj.price} руб.</span></p>
 

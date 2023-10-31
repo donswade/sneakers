@@ -10,7 +10,7 @@ const Baner = ({ changeDrawerStatus }) => {
       <div className={style.after} style={{ "backgroundImage": `url(${banner})` }}></div>
       <h2 className={style.title}><span className={style.span}>Stan Smith</span>,<br />
         Forever!</h2>
-      <button onClick={changeDrawerStatus} className={style.button}>Купить</button>
+      <button onClick={changeDrawerStatus} className={style.button}>Купити</button>
     </div>
   )
 }

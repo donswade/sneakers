@@ -1,7 +1,6 @@
 import axios from "axios"
-import React, { useEffect } from "react"
+import React from "react"
 import { useForm } from "react-hook-form"
-import { useLocation } from "react-router-dom"
 //файли, компоненти
 
 import style from "./drawer.module.scss"
@@ -91,10 +90,10 @@ const Drawer = (
   const Carts = addedCarts.map((cart, index) => {
     return (
       <div className={style.card} key={index} >
-        <img className={style.cardImg} src={"sneakers/" + cart.img} alt="image sneaker" />
+        <img className={style.cardImg} src={cart.img} alt="sneaker" />
         <div className={style.cardText}>
           <h2 className={style.cardTitle}>{cart.name}</h2>
-          <p className={style.cardDescription}><span className={style.cardPrice}>{cart.price} руб.</span></p>
+          <p className={style.cardDescription}><span className={style.cardPrice}>{cart.price} грн.</span></p>
         </div>
         <div className={style.cardButton} onClick={() => onClickAdd("add", cart)}>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -111,9 +110,9 @@ const Drawer = (
         <div className={style.sideBarContainer}>
           {Carts}
         </div>
-        <div className={`${style.sideBarText} ${style.first}`}>Итого <span className={style.sideBarTextSpan}>{priceAddedCards()} руб.</span></div>
-        <div className={`${style.sideBarText} ${style.second}`}>Налог 5%:  <span className={style.sideBarTextSpan}>{taxCounter(priceAddedCards())} руб. </span></div>
-        <button onClick={() => { setOpen(true) }} className={style.button}>Оформить заказ</button>
+        <div className={`${style.sideBarText} ${style.first}`}>Всього<span className={style.sideBarTextSpan}>{priceAddedCards()} грн.</span></div>
+        <div className={`${style.sideBarText} ${style.second}`}>Податок 5%:  <span className={style.sideBarTextSpan}>{taxCounter(priceAddedCards())} грн. </span></div>
+        <button onClick={() => { setOpen(true) }} className={style.button}>Оформити замовлення</button>
       </>
     )
 
@@ -122,10 +121,10 @@ const Drawer = (
   const NothingAdded = () => {
     return (
       <div className={style.nothingBox}>
-        <img className={style.nothingImg} src={drawerBox} />
-        <h2 className={style.nothingTitle}>Корзина пустая</h2>
-        <p className={style.nothingDescription}> Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.</p>
-        <div onClick={(e) => closeDrawer(e)} className={`${style.nothingButton} ${style.button}`}>Вернуться назад</div>
+        <img className={style.nothingImg} src={drawerBox} alt="nothing found" />
+        <h2 className={style.nothingTitle}>Кошик пустий</h2>
+        <p className={style.nothingDescription}>Нє ну то треба купити щось, кроси лишніми не бувають</p>
+        <div onClick={(e) => closeDrawer(e)} className={`${style.nothingButton} ${style.button}`}>Вернутися назад</div>
       </div>
     )
   }
@@ -133,10 +132,10 @@ const Drawer = (
   const Completed = () => {
     return (
       <div className={style.completed}>
-        <img className={style.completedImg} src={completed} />
-        <h2 className={style.completedTitle}>Заказ оформлен!</h2>
-        <p className={style.completedDescription}>Ваш заказ #18 скоро будет передан курьерской доставке</p>
-        <div onClick={(e) => closeDrawer(e)} className={`${style.nothingButton} ${style.button}`}>Вернуться назад</div>
+        <img className={style.completedImg} src={completed} alt="complete" />
+        <h2 className={style.completedTitle}>Замовлення прийнято!</h2>
+        <p className={style.completedDescription}>Твоє замовлення #18 скоро буде опрацьоване і відправлене</p>
+        <div onClick={(e) => closeDrawer(e)} className={`${style.nothingButton} ${style.button}`}>Вернутися назад</div>
       </div>
     )
   }
@@ -145,7 +144,7 @@ const Drawer = (
     return (
       <div onClick={(e) => closeModal(e)} className={opened ? `${style.drawer} ${style.modalWindowActive}` : `${style.drawer} ${style.modalWindow}`}>
         <form className={style.modal} onSubmit={handleSubmit(showData)}>
-          <h2 className={style.modalTitle} >Оформити заказ</h2>
+          <h2 className={style.modalTitle} >Оформити замовлення</h2>
           <div className={style.inputsBlock}>
             <label className={style.label}>
               <input {...register("firstName", {
@@ -228,7 +227,7 @@ const Drawer = (
       <div className={style.exit} onClick={(e) => closeDrawer(e)}></div>
       <div className={style.drawerBox}>
         <div className={isDrawerOpen ? `${style.sideBar} ${style.sideBarOpened}` : `${style.sideBar} ${style.sideBarClosed}`}>
-          <h2 className={style.title}>Корзина</h2>
+          <h2 className={style.title}>Кошик</h2>
           {isLoading ? <Texts status={isConection} /> : isShowComplete ? <Completed /> : addedCarts.length > 0 ? <RenderCart /> : <NothingAdded />}
         </div>
         <Modal />

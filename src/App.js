@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Routes, Route, json } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 
 import Card from './component/Card';
@@ -64,7 +64,6 @@ function App() {
     const copyLikeItems = JSON.parse(JSON.stringify(likedCarts));
     const indexOfCardInItems = copyItems.findIndex(card => Number(card.id) === Number(copyCard.id))
     const indexofCardinAdded = copyAddedItems.findIndex(card => Number(card.id) === Number(copyCard.id))
-    const indexofCardinLike = copyLikeItems.findIndex(card => Number(card.id) === Number(copyCard.id))
 
     if (nameButton === "add") {
       console.log(nameButton)
@@ -86,7 +85,7 @@ function App() {
         try {
           copyCard.isAdded = !copyCard.isAdded;
           copyItems[indexOfCardInItems] = copyCard;
-          const newAddedCarts = copyAddedItems.filter(element => element.id != copyCard.id);
+          const newAddedCarts = copyAddedItems.filter(element => element.id !== copyCard.id);
           setAddedCarts(newAddedCarts);
           setItems(copyItems)
           console.log(copyAddedItems[indexofCardinAdded].element)
@@ -115,7 +114,7 @@ function App() {
         try {
           copyCard.isLike = !copyCard.isLike;
           copyItems[indexOfCardInItems] = copyCard;
-          const newLikeCarts = copyLikeItems.filter(element => element.id != copyCard.id);
+          const newLikeCarts = copyLikeItems.filter(element => element.id !== copyCard.id);
           setLikedCarts(newLikeCarts);
           setItems(copyItems)
         } catch {
@@ -261,7 +260,7 @@ function App() {
         />
         <div className='content'>
           <Routes>
-            <Route path="/sneakers" element={
+            <Route path="" element={
               <Main
                 setAddedCarts={setAddedCarts}
                 isLoading={isLoading}
